@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+	<title></title>
+	<style type="text/css">
+		*{margin:0px;padding:0px;overflow:hidden;font-size:12px;border:0px;}
+		#top{width:100%;height:50px;border-bottom: 1px solid #d4d4d4;}
+		#top div{float:left;height:50px;}
+		#top .top-center{width:50%;}
+		#top #zcShow{width:90px;height:50px;margin:0px auto;}
+		#select{position:fixed;top:0px;left:0px;background:url(empty.png);width:100%;height:100%;display:none;}
+		#loading{position:fixed;top:92px;left:40px;background:white;display:none;}
+		#content .row div{float:left;}
+		#content .row-header div{float:left;}
+		#content .clom-l{height:100%;}
+		#content .clom-l .l{width:96%;height:96%;margin-top:2%;margin-left:2%;border-radius:5px;padding:4% 0;text-align:center;}
+		#detail{position:fixed;background:url(empty.png);width:100%;height:100%;top:0px;left:0px;display:none;}
+		#detail .show{background:url(empty1.png);width:80%;height:250px;border-radius:15px;}
+	</style>
+</head>
+<body>
+	<div id="top">
+		<div class="top-left" style="width:25%;"><i onclick="back()" style="display:block;height:33px;width:33px;background:url(back.png) 0px 0px;margin:8px 0px 0px 10px;"></i></div>
+		<div class="top-center"><div id="zcShow" item="" onclick="selectZc(this)"><div class="zc" style="font-size:20px;line-height:50px;float:left;">第1周</div><img src="selectzc.png" style="width:18px;height:18px;margin-top:16px;display:block;float:right;"></div></div>
+		<div  class="top-right" style="width:25%;"><img onclick="flushs(this)" src="flush.png" style="width:30px;height:30px;float:right;margin:10px 10px 0px 0px;"></div>
+	</div>
+	<div id="content">
+		<div class="row-header" style="width:100%;height:40px;border-bottom:1px solid #f1f1f1;">
+			<div class="clom-header" style="width:40px;height:100%;"><div style="width:39px;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;border-right:1px solid #eaeaea;"></div></div>
+			<div class="clom1 clom" ><div style="width:98%;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;border-right:1px solid #eaeaea;">周一</div></div>
+			<div class="clom2 clom" ><div style="width:98%;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;border-right:1px solid #eaeaea;">周二</div></div>
+			<div class="clom3 clom" ><div style="width:98%;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;border-right:1px solid #eaeaea;">周三</div></div>
+			<div class="clom4 clom" ><div style="width:98%;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;border-right:1px solid #eaeaea;">周四</div></div>
+			<div class="clom5 clom" ><div style="width:98%;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;border-right:1px solid #eaeaea;">周五</div></div>
+			<div class="clom6 clom" ><div style="width:98%;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;border-right:1px solid #eaeaea;">周六</div></div>
+			<div class="clom7 clom"><div style="width:100%;height:100%;font-size:16px;line-height:40px;text-align:center;color:#bbbbbb;">周日</div></div>
+		</div>
+		<div class="row1 row">
+			<div class="clom-header" style="width:40px;height:100%;"><div style="text-align:center;width:39px;height:98%;color:#bbbbbb;border-right:1px solid #eaeaea;border-bottom:1px solid #eaeaea;">8:00<br>一<br>9:40</div></div>
+			<div class="clom1 clom clom-l" item="1-1" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom2 clom clom-l" item="2-1" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom3 clom clom-l" item="3-1" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom4 clom clom-l" item="4-1" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom5 clom clom-l" item="5-1" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom6 clom clom-l" item="6-1" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom7 clom clom-l" item="7-1" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+		</div>
+		<div class="row2 row">
+			<div class="clom-header" style="width:40px;height:100%;"><div style="text-align:center;width:39px;height:98%;color:#bbbbbb;border-right:1px solid #eaeaea;border-bottom:1px solid #eaeaea;">10:00<br>二<br>11:40</div></div>
+			<div class="clom1 clom clom-l" item="1-2" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom2 clom clom-l" item="2-2" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom3 clom clom-l" item="3-2" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom4 clom clom-l" item="4-2" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom5 clom clom-l" item="5-2" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom6 clom clom-l" item="6-2" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom7 clom clom-l" item="7-2" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+		</div>
+		<div class="row3 row">
+			<div class="clom-header" style="width:40px;height:100%;"><div style="text-align:center;width:39px;height:98%;color:#bbbbbb;border-right:1px solid #eaeaea;border-bottom:1px solid #eaeaea;">14:00<br>三<br>15:40</div></div>
+			<div class="clom1 clom clom-l" item="1-3" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom2 clom clom-l" item="2-3" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom3 clom clom-l" item="3-3" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom4 clom clom-l" item="4-3" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom5 clom clom-l" item="5-3" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom6 clom clom-l" item="6-3" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom7 clom clom-l" item="7-3" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+		</div>
+		<div class="row4 row">
+			<div class="clom-header" style="width:40px;height:100%;"><div style="text-align:center;width:39px;height:98%;color:#bbbbbb;border-right:1px solid #eaeaea;border-bottom:1px solid #eaeaea;">16:00<br>四<br>17:40</div></div>
+			<div class="clom1 clom clom-l" item="1-4" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom2 clom clom-l" item="2-4" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom3 clom clom-l" item="3-4" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom4 clom clom-l" item="4-4" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom5 clom clom-l" item="5-4" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom6 clom clom-l" item="6-4" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom7 clom clom-l" item="7-4" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+		</div>
+		<div class="row5 row">
+			<div class="clom-header" style="width:40px;height:100%;"><div style="text-align:center;width:39px;height:98%;color:#bbbbbb;border-right:1px solid #eaeaea;border-bottom:1px solid #eaeaea;">17:00<br>五<br>18:40</div></div>
+			<div class="clom1 clom clom-l" item="1-5" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom2 clom clom-l" item="2-5" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom3 clom clom-l" item="3-5" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom4 clom clom-l" item="4-5" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom5 clom clom-l" item="5-5" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom6 clom clom-l" item="6-5" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+			<div class="clom7 clom clom-l" item="7-5" ><div class="l"><div style="width:85%;height:90%;color:white;font-size:14px;line-height:19px;"></div></div></div>
+		</div>
+	</div>
+	<div id="select" onclick="hiddenPanel(this)">
+		<div class="panel" style="width:150px;height:250px;margin:51px auto;background:white;border-radius:10px;overflow:auto;">
+			
+		</div>
+	</div>
+	<div id="loading">
+		<img src="loading1.gif" style="width:50px;height:50px;display:block;">
+	</div>
+	<div id="detail">
+		<div class="show">
+			<div class="title" style="height:30px;"><div style="width:10%;height:30px;float:left;"></div><div style="width:80%;font-size:18px;color:white;height:30px;text-align:center;float:left;letter-spacing:2px;line-height:30px;">课程详情</div><div style="width:10%;height:30px;float:left;"><img onclick="closeDetail()" src="close.png" style="width:20px;height:20px;margin:5px 5px 0px 0px;display:block;float:right;" /></div></div>
+			<div class="classname" style="height:44px;width:100%;line-height:44px;color:white;font-size:15px;padding-left:9px;"></div>
+			<div class="teacher" style="height:44px;width:100%;line-height:44px;color:white;font-size:15px;padding-left:9px;"></div>
+			<div class="classroom" style="height:44px;width:100%;line-height:44px;color:white;font-size:15px;padding-left:9px;"></div>
+			<div class="time" style="height:44px;width:100%;line-height:44px;color:white;font-size:15px;padding-left:9px;"></div>
+			<div class="fenbu" style="height:44px;width:100%;line-height:44px;color:white;font-size:15px;padding-left:9px;"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="user.do?method=zl"></script>
+<script type="text/javascript">
+	//屏幕分辨率保存
+	var width = parent.init.clientWidth ;
+	var height = parent.init.clientHeight ;
+	//保存课表的全局变量
+	var kb ;
+	//保存一天中课程的时间段
+	var classTime = [
+	    1000*60*60*9 + 1000*60*40  , //第一节课下课时间
+	    1000*60*60*11 + 1000*60*40  ,//第二节课下课时间
+	    1000*60*60*15 + 1000*60*40 , //第三节课下课时间
+	    1000*60*60*17 + 1000*60*40 , //第四节课下课时间
+	    1000*60*60*20 + 1000*60*40   //第五节课下课时间
+	] ;
+	//日期格式化的方法 ,来自https://www.cnblogs.com/zhangpengshou/p/2599053.html
+	Date.prototype.Format = function (fmt) { //author: meizz
+	    var o = {
+	        "M+": this.getMonth() + 1, //月份
+	        "d+": this.getDate(), //日
+	        "h+": this.getHours(), //小时
+	        "m+": this.getMinutes(), //分
+	        "s+": this.getSeconds(), //秒
+	        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+	        "S": this.getMilliseconds() //毫秒
+	    };
+	    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	    for (var k in o)
+	    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	    return fmt;
+	}
+	var colors = ["#96efbe" , "#b89fe0" , "#ef9199" , "#d091c4" , "#7ea966" , "#78b8c6" , "#8878c6" , "#cca6bb" , "#6294ef"] ;
+	var isEmpty = false ;
+	var day = {} ; //保存当日时间相关
+	$(function(){
+	    $("#top #zcShow").css("margin-left" , (width*0.5 - 100)/2 + "px" );
+	    $("#content").css("height" , height - 50 + "px");
+	    $("#loading").css("height" , height - 92 + "px") ;
+	    $("#loading").css("width" , width - 40 + "px") ;
+	    $("#loading img").css("margin" , (height - 92 - 50)/2 + "px auto") ;
+	    $("#detail .show").css("margin" , (height - 250)/2 + "px auto") ;
+	    //计算课表显示栏每格宽度
+	    var w = width - 40 ;
+	    var h = height - 40 - 51 ;
+	    $(".clom").css("width" , w/7 + "px") ;
+	    $(".row").css("height" , h/5 + "px") ;
+	    $(".row").css("line-height" , h/15 + "px") ;
+	    //给panel中加入25周选项
+	    for(var i=1 ; i<=25 ; i++){
+	        $("#select .panel").append("<div onclick='clickZc(this)' item="+i+" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>第"+i+"周</div>") ;
+	    }
+	    var request = new XMLHttpRequest() ;
+	    request.open("GET" , "user.do?method=kb" , true) ;
+	    request.responseType = "json" ;
+	    request.onreadystatechange = function(){
+	        if(request.readyState == 4 && request.status == 200){
+	            kb = request.response ;
+	            errorDo(kb)
+	            day = getInfo(kb) ;
+	            $("#zcShow .zc").html("第"+day.zc+"周") ;
+	            $("#zcShow").attr("item" , day.zc)
+	            $("#select .panel div").eq(day.zc-1).html("第"+day.zc+"周(本周)") ;
+	            showResult(day , kb.kb) ;
+	            parent.loadShow("none");
+	        }
+	    }
+	    request.send() ;
+
+	    //给课程加点击事件（展示详细信息）
+	    $(".row .clom").each(function(){
+	        $(this).click(function(){
+	            var zc = $("#zcShow").attr("item") ;
+	            var strs = $(this).attr("item").split("-") ;
+	            var data = kb.kb[zc][strs[0]][strs[1]]
+	            if(typeof(data) == "undefined"){
+	                return ;
+	            }
+	            $("#detail").css("display" , "block") ;
+	            $("#detail .show .classname").html("名称："+decode(data.classname)) ;
+	            $("#detail .show .teacher").html("教师："+decode(data.teacher)) ;
+	            $("#detail .show .classroom").html("教室："+decode(data.classroom)) ;
+	            $("#detail .show .time").html("时间：周"+zc+" 第"+strs[1]+"大节") ;
+	            $("#detail .show .fenbu").html("总表："+data.fenbu+"  周") ;
+	        })
+	    })
+	});
+
+	//页面刷新事件
+	function flushs(obj){
+	    $("#loading").css("display" , "block") ;
+	    $.ajax({
+	        url:"user.do?method=kb&flag=flush" ,
+	        type:"GET" ,
+	        dataType:"json" ,
+	        success:function(data){
+	            errorDo(data)
+	            kb = data ;
+	            day = getInfo() ;
+	            $("#zcShow .zc").html("第"+day.zc+"周") ;
+	            $("#zcShow").attr("item" , day.zc)
+	            $("#select .panel div").eq(day.zc-1).html("第"+day.zc+"周(本周)") ;
+	            showResult(day , kb.kb) ;
+	            window.setTimeout(function(){$("#loading").css("display" , "none") ;} , 10)
+	        }
+	    }) ;
+	}
+	//隐藏选择面板的点击事件
+	function hiddenPanel(obj){
+	    $(obj).css("display" , "none")
+	}
+	//解析课表
+	function showResult(day , kb){
+	    var data = kb[day.zc] ;
+	    $(".row .clom .l").css("background" , "white")
+	    $(".row .clom .l div").html("")
+	    var count = 0 ;
+	    for(var i=1 ; i<=7 ; i++){
+	        for(var key in data[i]){
+	            d = data[i] ;
+	            var c = parent.init.color[decode(d[key].classname)]  ;
+	            if(c == null){
+	                c = colors[count++] ;
+	                parent.init.color[decode(d[key].classname)] = c ;
+	            }
+	            $(".row"+key+" .clom"+i+" .l").css("background" , c)
+	            $(".row"+key+" .clom"+i+" .l div").html(decode(d[key].classname) + "@" + decode(d[key].classroom))
+	        }
+	    }
+	    $(".row-header div").css("background" , "white") ;
+	    $(".row .clom-header div").css("background" , "white") ;
+	    if(day.day != null){
+	        var temp = day.day == 0 ? 7 : day.day ;
+	        $(".row-header .clom"+temp+" div").css("background" , "#eaeaea");
+	    }
+	    if(day.count != null && day.day != null){
+	        var temp = day.day == 0 ? 7 : day.day ;
+	        $(".row"+day.count+" .clom-header div").css("background" , "#eaeaea") ;
+	    }
+	}
+	//关闭课程详情展示页
+	function closeDetail(){
+	    $("#detail").css("display" , "none") ;
+	}
+	//unicode解码
+	function decode(str){
+	    //先把十六进制unicode编码/u替换为%u
+	    str = str.replace(/\\u/gi,'%u');
+	    //再把页面中反斜杠替换为空
+	    str = str.replace(/\\/gi,'');
+	    return unescape(str);
+	}
+
+	//周次选择面板点击事件
+	function selectZc(obj){
+	    $("#select").css("display" , "block")
+	    var zc = $("#zcShow").attr("item")*1 ;
+	    if(zc <= 3){
+	        $("#select .panel")[0].scrollTop = 0 ;
+	    }else if(zc > 3 && zc < 23){
+	        $("#select .panel")[0].scrollTop = (zc - 3 )*50 ;
+	    }else if(zc >= 23){
+	        $("#select .panel")[0].scrollTop = 20*50 ;
+	    }
+	    $("#select .panel div").each(function(){
+	        $(this).css("background" , "white")
+	    })
+	    $("#select .panel div").eq(zc-1).css("background" , "#68ead9") ;
+	}
+
+	function clickZc(obj){
+	    var zc = $(obj).attr("item") ;
+	    $("#zcShow").attr("item" , zc) ;
+	    $("#select").css("display" , "none")
+	    if(zc == day.zc){
+	        var data = day ;
+	    }else{
+	        var data = {zc:zc}
+	    }
+	    $("#loading").css("display" , "block") ;
+	    $("#zcShow div").html("第"+zc+"周") ;
+	    showResult(data , kb.kb) ;
+	    window.setTimeout(function(){$("#loading").css("display" , "none") ;} , 100)
+	}
+
+	function getInfo(){
+	    var date = new Date() ;
+	    var t = date.Format("yyyy-MM-dd") ;
+	    //当前周
+	    var zc ;
+	    //当前星期几
+	    var day ;
+	    errorDo(result)
+	    //保存返回数据
+	    var res = {} ;
+	    for(var i in result){
+	        for(var j in result[i]){
+	            if(result[i][j] == t){
+	                zc = i ;
+	                day = j ;
+	            }
+	        }
+	    }
+	    res.zc = zc ;
+	    res.day = day ;
+	    //计算当前时间距离今天0点的毫秒数
+	    var m = date.getTime() - new Date(date.setHours(0,0,0,0)).getTime() ;
+	    for(var i=0 ; i<classTime.length ; i++){
+	        if(m < classTime[i]){
+	            res.count = i + 1 ;
+	            break ;
+	        }
+	    }
+	    if(typeof(res.count) == "undefined"){
+	        res.count = 5 ;
+	    }
+	    return res ;
+	}
+
+	//返回事件
+	function back(){
+	    history.go(-1) ;
+	}
+
+	window.onpopstate = function(event) {
+	    parent.loadShow("block") ;
+	    history.go(-1) ;
+	};
+	window.history.pushState(null, null, document.URL);
+	//window.history.forward(-1);
+
+	function errorDo(data){
+	    if(data == null){
+	        return ;
+	    }else if(data.code == "-1"){
+	        parent.showError("网络错误，请稍后再试") ;
+	        parent.loadShow("none") ;
+	    }else if(data.code == "-2" || data.code == "-3"){
+	        parent.showError("HUT网络环境不支持此功能") ;
+	        parent.loadShow("none") ;
+	    }
+	}
+</script>
+</html>

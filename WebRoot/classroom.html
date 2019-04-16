@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+	<title></title>
+	<style type="text/css">
+		*{margin:0px;padding:0px;overflow:hidden;font-size:12px;border:0px;}
+		#top{width:100%;height:50px;border-bottom: 1px solid #d4d4d4;background:#ffbe87;}
+		#top div{float:left;height:50px;}
+		#top .top-center{width:50%;}
+		#top #classSelect{width:105px;height:50px;margin:0px auto;}
+		#select{position:fixed;top:0px;left:0px;background:url(empty.png);width:100%;height:100%;display:none;}
+		#center{background:url(bg.jpg);}
+		#bottom{width:100%;height:55px;border-top:1px solid #d4d4d4;background:#ffbe87;}
+		#taking{width:100%;height:100%;display:block;}
+		#empty{width:100%;height:100%;display:none;}
+		#center #taking{overflow: auto;}
+		#center #empty{overflow: auto;}
+		#center .box{width:50%;height:200px;float:left;}
+		#bottom .b{float:left;width:50%;height:55px;}
+	</style>
+</head>
+<body>
+	<div id="top">
+		<div class="top-left" style="width:25%;"><i onclick="back()" style="display:block;height:33px;width:33px;background:url(back.png) 0px 0px;margin:8px 0px 0px 10px;"></i></div>
+		<div class="top-center"><div id="classSelect" item="" onclick="selectRoom(this)"><div class="zc" style="font-size:20px;line-height:50px;float:left;">公共楼</div><img src="selectzc.png" style="width:18px;height:18px;margin-top:16px;display:block;float:right;"></div></div>
+		<div  class="top-right" style="width:25%;"><img onclick="flushs(this)" src="saixuan.png" style="width:30px;height:30px;float:right;margin:10px 10px 0px 0px;"></div>
+	</div>
+	<div id="center">
+		<div id="taking"></div>
+		<div id="empty"></div>
+	</div>
+	<div id="bottom">
+		<div class="bottom-left b">
+			<img onclick="chose(this)" item="1" src="ing.png" style="width:30px;height:40px;display:block;margin:10px auto;box-shadow:9px 9px 4px black;">
+		</div>
+		<div class="bottom-right b">
+			<img onclick="chose(this)" item="2" src="emptyroom.png" style="width:30px;height:40px;display:block;margin:10px auto;">
+		</div>
+	</div>
+	<div id="select" onclick="hiddenPanel(this)">
+		<div class="panel" style="width:150px;height:250px;margin:51px auto;background:white;border-radius:10px;overflow:auto;">
+			<div onclick='clickZc(this)' item="1" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>公共楼</div>
+			<div onclick='clickZc(this)' item="2" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>包设楼</div>
+			<div onclick='clickZc(this)' item="3" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>河东主教</div>
+			<div onclick='clickZc(this)' item="4" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>河东电教</div>
+			<div onclick='clickZc(this)' item="5" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>冶金楼</div>
+			<div onclick='clickZc(this)' item="6" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>电气楼</div>
+			<div onclick='clickZc(this)' item="7" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>电教楼</div>
+			<div onclick='clickZc(this)' item="8" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>土木楼</div>
+			<div onclick='clickZc(this)' item="9" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>综合楼</div>
+			<div onclick='clickZc(this)' item="10" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>法学楼</div>
+			<div onclick='clickZc(this)' item="11" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>音乐楼</div>
+			<div onclick='clickZc(this)' item="12" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>外语楼</div>
+			<div onclick='clickZc(this)' item="13" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>机械楼</div>
+			<div onclick='clickZc(this)' item="14" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>计通楼</div>
+			<div onclick='clickZc(this)' item="15" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>其他</div>
+		</div>
+	</div>
+	<div id="loading" style="background:white;width:100%;position:fixed;top:51px;left:0px;display:none ;">
+		<img src="loading1.gif" style="width:60px;height:60px;display:block;">
+	</div>
+	<div id="choseDate" item="1" style="width:100%;background:#ffbe87;position:fixed;top:51px;left:0px;height:0px;transition:height 0.5s;">
+		<div class="content" style="width:90%;margin:0px auto;">
+			<div class="zc" style="width:100%;height:80px;margin-top:6px;">
+				<div style="color:#595959;font-size:18px;width:55px;float:left;line-height:40px;">周次：</div>
+				<div class="b" style="float:left;height:80px;line-height:40px;"></div>
+			</div>
+			<div class="day" style="width:100%;height:50px;margin-top:6px;">
+				<div style="color:#595959;font-size:18px;width:55px;float:left;line-height:50px;">星期：</div>
+				<div class="b" style="float:left;height:50px;line-height:50px;"></div>
+			</div>
+			<div class="clas" style="width:100%;height:50px;margin-top:6px;">
+				<div style="color:#595959;font-size:18px;width:55px;float:left;line-height:50px;">课时：</div>
+				<div class="b" style="float:left;height:50px;line-height:50px;"></div>
+			</div>
+		</div>
+	</div>
+	<img src="room1521.jpg" style='display:none;'>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="user.do?method=zl"></script>
+<script type="text/javascript">
+	//屏幕分辨率保存
+	var width = parent.init.clientWidth ;
+	var height = parent.init.clientHeight ;
+	//保存初始变量
+	var init = {
+		page:1 ,
+		size:10 ,
+		type:1 , //当前选中的教室类型
+		zc : 0 , //当前所处的周数
+		day:0 , //当前星期几
+		clas:0, //当前是第几节课
+		taking:{} ,//正在上课的教室
+		empty:{} ,  //空教室
+		flag:true ,  //true展示正在上课的教室 , false展示空教室
+		isNext:true  //是否还有下一页
+	}
+	//保存一天中课程的时间段
+	var classTime = [
+		1000*60*60*9 + 1000*60*40  , //第一节课下课时间
+		1000*60*60*11 + 1000*60*40  ,//第二节课下课时间
+		1000*60*60*15 + 1000*60*40 , //第三节课下课时间
+		1000*60*60*17 + 1000*60*40 , //第四节课下课时间
+		1000*60*60*20 + 1000*60*40   //第五节课下课时间
+	] ;
+	//日期格式化的方法 ,来自https://www.cnblogs.com/zhangpengshou/p/2599053.html
+	Date.prototype.Format = function (fmt) { //author: meizz 
+	    var o = {
+	        "M+": this.getMonth() + 1, //月份 
+	        "d+": this.getDate(), //日 
+	        "h+": this.getHours(), //小时 
+	        "m+": this.getMinutes(), //分 
+	        "s+": this.getSeconds(), //秒 
+	        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+	        "S": this.getMilliseconds() //毫秒 
+	    };
+	    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	    for (var k in o)
+	    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	    return fmt;
+	}
+	
+	window.onload = function(){
+		$("#top #classSelect").css("margin-left" , (width*0.5 - 100)/2 + "px" );
+		$("#center").css("height" , (height - 107) + "px") ;
+		$("#loading img").css("margin" , (height - 166)/2  + "px auto") ;
+		$("#loading").css("height" , height - 107 + "px") ;
+		$("#choseDate .b").css("width" , 0.9*width - 55 + "px") ;
+		//计算当前所在周，当前星期几，当前第几节课
+		var res = getTime() ;
+		//初始化筛选框
+		$("#choseDate .zc .b").attr("item" , res.zc) ;
+		$("#choseDate .day .b").attr("item" , res.day) ;
+		$("#choseDate .clas .b").attr("item" , res.clas) ;
+		$.ajax({
+			type:"GET" ,
+			dataType:"json" ,
+			url:"user.do?method=kjs&zc="+res.zc+"&day="+res.day+"&clas="+res.clas ,
+			success:function(data){
+				init.zc = res.zc ;
+				init.day = res.day ;
+				init.clas = res.clas ;
+				init.page = 1 ;
+				init.taking = data.taking ;
+				init.empty = data.empty ;
+				init.isNext = true ;
+				showResult() ;
+			},error:function(){
+				parent.loadShow("none");
+			}
+		}) ;
+
+		//对筛选内容进行初始化
+		{
+			//展示周次
+			for(var i=res.zc ; i<=25 ; i++){
+				if(i == res.zc){
+					var div = $("<div onclick='seleDate(this)' style='width:28px;height:40px;line-height:40px;font-size:18px;text-align:center;float:left;color:#595959;background:#c0aeae;border-radius:5px;' item='"+i+"'>"+i+"</div>") ;
+				}else{
+					var div = $("<div onclick='seleDate(this)' style='width:28px;height:40px;line-height:40px;font-size:18px;text-align:center;float:left;color:#595959;border-radius:5px;' item='"+i+"'>"+i+"</div>") ;
+				}
+				$("#choseDate .zc .b").append(div) ;
+			}
+			//展示星期
+			for(var i=1 ; i<=7 ; i++){
+				if(i == res.day){
+					var div = $("<div onclick='seleDate(this)' style='width:28px;height:40px;line-height:40px;font-size:18px;text-align:center;float:left;color:#595959;background:#c0aeae;border-radius:5px;' item='"+i+"'>"+i+"</div>") ;
+				}else{
+					var div = $("<div onclick='seleDate(this)' style='width:28px;height:40px;line-height:40px;font-size:18px;text-align:center;float:left;color:#595959;border-radius:5px;' item='"+i+"'>"+i+"</div>") ;
+				}
+				$("#choseDate .day .b").append(div) ;
+			}
+			//展示第几节课
+			for(var i=1 ; i<=5 ; i++){
+				if(i == res.clas){
+					var div = $("<div onclick='seleDate(this)' style='width:28px;height:40px;line-height:40px;font-size:18px;text-align:center;float:left;color:#595959;background:#c0aeae;border-radius:5px;' item='"+i+"'>"+i+"</div>") ;
+				}else{
+					var div = $("<div onclick='seleDate(this)' style='width:28px;height:40px;line-height:40px;font-size:18px;text-align:center;float:left;color:#595959;border-radius:5px;' item='"+i+"'>"+i+"</div>") ;
+				}
+				$("#choseDate .clas .b").append(div) ;
+			}
+		}
+	}
+
+	$("#center").click(function(){
+		$("#choseDate").attr("item" , "1") ;
+		$("#choseDate").css("height" , "0px") ;
+	}) ;
+
+	function seleDate(obj){
+		$(obj).parents(".b").attr("item" , $(obj).attr("item")) ;
+		init.zc = $("#choseDate .zc .b").attr("item") ;
+		init.day = $("#choseDate .day .b").attr("item") ;
+		init.clas = $("#choseDate .clas .b").attr("item") ;
+		init.page = 1 ;
+		$.ajax({
+			type:"GET" ,
+			dataType:"json" ,
+			url:"user.do?method=kjs&zc="+init.zc+"&day="+init.day+"&clas="+init.clas ,
+			success:function(data){
+				init.taking = data.taking ;
+				init.empty = data.empty ;
+				init.isNext = true ;
+				$(obj).parents(".b").find("div").each(function(){
+					$(this).css("background" , "rgb(255, 190, 135)") ;
+				}) ;
+				showResult() ;
+				$(obj).css("background" , "#c0aeae")
+			},error:function(){
+				//parent.loadShow("none");
+			}
+		});
+	}
+
+	function chose(obj){
+		$("#choseDate").attr("item" , "1") ;
+		$("#choseDate").css("height" , "0px") ;
+		init.isNext = true ;
+		$("#bottom .b img").each(function(){
+			$(this).css("box-shadow" , "0px 0px 0px white") ;
+		})
+		if($(obj).attr("item") == "1"){
+			$("#bottom .bottom-left img").css("box-shadow", "9px 9px 4px black") ;
+			$("#taking").css("display" , "block")
+			$("#empty").css("display" , "none")
+			init.flag = true ;
+			init.page = 1 ;
+			$("#taking div").each(function(){
+				$(this).remove() ;
+			})
+			$("#loading").css("display" , "block")
+			window.setTimeout(function(){showResult() ;$("#loading").css("display" , "none") ;} , 1000) ;
+		}else if($(obj).attr("item") == "2"){
+			$("#bottom .bottom-right img").css("box-shadow", "9px 9px 4px black") ;
+			$("#taking").css("display" , "none")
+			$("#empty").css("display" , "block")
+			init.flag = false ;
+			init.page = 1 ;
+			$("#empty div").each(function(){
+				$(this).remove() ;
+			})
+			$("#loading").css("display" , "block")
+			window.setTimeout(function(){showResult() ;$("#loading").css("display" , "none");} , 1000)
+		}
+	}
+
+	//解析教室
+	function showResult(){
+		if(init.flag){
+			if(init.page == 1){
+				$("#taking .box").each(function(){
+					$(this).remove() ;
+				}) ;
+			}
+			var start = (init.page-1)*init.size ;
+			var temp = [] ;
+			for(var i=0 ; i<init.taking.length ; i++){
+				if(init.taking[i].type == init.type){
+					temp.push(init.taking[i]) ;
+				}
+			}
+			for(var i=start ; i<start+init.size ; i++){	
+				if(i == temp.length){
+					init.isNext = false ;
+					break ;
+				}
+				var div = $("<div onclick='selectR(this)' classroom=\""+temp[i].classroom+"\" fenbu=\"["+temp[i].tody+"]\" class='box'></div>") ;
+				var inner = $("<div style='background:url(room1521.jpg);width:96%;height:190px;margin:10px auto 0px;border-radius:8px;'><div>") ;
+				var title = $("<div style='width:100%;height:30px;text-align:center;font-size:18px;line-height:30px;color:#7a7a7a;'>"+temp[i].classroom+"</div>") ;
+				var time = $("<div style='width:100%;height:50px;font-size:18px;line-height:50px;color:#7a7a7a;text-align:center;'>星期"+init.day+" 第"+init.clas+"大节课</div>") ;
+				var classname = $("<div style='width:100%;height:50px;font-size:18px;line-height:50px;color:#7a7a7a;text-align:center;'>"+temp[i].classname+"</div>") ;
+				var teacher = $("<div style='width:100%;height:50px;font-size:18px;line-height:50px;color:#7a7a7a;text-align:center;'>"+temp[i].teacher+"</div>") ;
+				inner.append(title).append(time).append(classname).append(teacher) ;
+				div.append(inner) ;
+				$("#taking").append(div) ;
+			}
+			parent.loadShow("none");
+		}else{
+			if(init.page == 1){
+				$("#empty .box").each(function(){
+					$(this).remove() ;
+				}) ;
+			}
+			var start = (init.page-1)*init.size ;
+			var temp = [] ;
+			for(var i=0 ; i<init.empty.length ; i++){
+				if(init.empty[i].type == init.type){
+					temp.push(init.empty[i]) ;
+				}
+			}
+			for(var i=start ; i<start+init.size ; i++){	
+				if(i == temp.length){
+					init.isNext = false ;
+					break ;
+				}
+				var div = $("<div onclick='selectR(this)' classroom=\""+temp[i].classroom+"\" fenbu=\"["+temp[i].tody+"]\" class='box'></div>") ;
+				var inner = $("<div style='background:url(room1521.jpg);width:96%;height:190px;margin:10px auto 0px;border-radius:8px;'><div>") ;
+				var title = $("<div style='width:100%;height:120px;text-align:center;font-size:25px;line-height:160px;color:#7a7a7a;'>"+temp[i].classroom+"</div>") ;
+				var time = $("<div style='width:100%;height:70px;font-size:18px;line-height:70px;color:#7a6aff;text-align:center;'>查看详情</div>") ;
+				inner.append(title).append(time) ;
+				div.append(inner) ;
+				$("#empty").append(div) ;
+			}
+			parent.loadShow("none");
+		}
+	}
+
+	//过滤器
+	function flushs(obj){
+		if($("#choseDate").attr("item") == "1"){
+			$("#choseDate").css("height" , "200px") ;
+			$("#choseDate").attr("item" , "2") ;
+		}else{
+			$("#choseDate").css("height" , "0px") ;
+			$("#choseDate").attr("item" , "1") ;
+		}
+	}
+
+	function selectRoom(obj){
+		$("#choseDate").css("height" , "0px") ;
+		$("#choseDate").attr("item" , "1") ;
+		$("#select").css("display" , "block") ;
+	}
+
+	function hiddenPanel(obj){
+		$("#select").css("display" , "none") ;
+	}
+
+	function clickZc(obj){
+		init.isNext = true ;
+		init.page = 1 ;
+		init.type = $(obj).attr("item") ;
+		$("#classSelect").attr("item" , init.type) ;
+		$("#classSelect div").html($(obj).html()) ;
+		$("#loading").css("display" , "block") ;
+		window.setTimeout(function(){showResult();$("#loading").css("display" , "none") ;} , 1000) ;
+		//$("#select").css("display" , "none") ;
+	}
+
+	function getTime(){
+		var date = new Date() ;
+		var t = date.Format("yyyy-MM-dd") ;
+		//当前周
+		var zc ;
+		//当前星期几
+		var day ;
+		//保存返回数据
+		var res = {} ;
+		errorDo(result)
+		for(var i in result){
+			for(var j in result[i]){
+				if(result[i][j] == t){
+					zc = i ;
+					day = j ;
+				}
+			}
+		}
+		res.zc = zc ;
+		res.day = day ;
+		//计算当前时间距离今天0点的毫秒数
+		var m = date.getTime() - new Date(date.setHours(0,0,0,0)).getTime() ;
+		for(var i=0 ; i<classTime.length ; i++){
+			if(m < classTime[i]){
+				res.clas = i + 1 ;
+				break ;
+			}
+		}
+		if(typeof(res.clas) == "undefined"){
+			res.clas = 5 ;
+		}
+		return res ;
+	}
+
+	//滚动条监听事件
+	var load1 = null ;
+	$("#center #taking").scroll(function(){
+		$("#choseDate").css("height" , "0px") ;
+		$("#choseDate").attr("item" , "1") ;
+		if(load1 == null){
+			var htmlHeight = parseInt($(this)[0].scrollHeight) ;
+			var clientHeight = parseInt($(this)[0].clientHeight) ;
+			var scrollTop = parseInt($(this)[0].scrollTop) ;
+			if(htmlHeight - (scrollTop + clientHeight) < 20){
+				if(init.isNext){
+					load1 = $("<div style='width:100%;height:50px;'><img src='uploading.gif' style='width:30px;height:30px;display:block;margin:10px auto ;'></div>") ;
+					$(this).append(load1) ;
+					window.setTimeout(function(){load1.remove();init.page++ ;showResult();load1 = null;} , 1000) ;
+				}
+			}
+		}
+	}) ;
+	//滚动条监听事件
+	var load = null ;
+	$("#center #empty").scroll(function(){
+		$("#choseDate").css("height" , "0px") ;
+		$("#choseDate").attr("item" , "1") ;
+		if(load == null){
+			var htmlHeight = parseInt($(this)[0].scrollHeight) ;
+			var clientHeight = parseInt($(this)[0].clientHeight) ;
+			var scrollTop = parseInt($(this)[0].scrollTop) ;
+			if(htmlHeight - (scrollTop + clientHeight) < 20){
+				if(init.isNext){
+					load = $("<div style='width:100%;height:50px;'><img src='uploading.gif' style='width:30px;height:30px;display:block;margin:10px auto ;'></div>") ;
+					$(this).append(load) ;
+					window.setTimeout(function(){load.remove();init.page++ ;load=null;showResult();} , 1000) ;
+				}
+			}
+		}
+	}) ;
+	//教室的点击事件
+	function selectR(obj){
+		$("#choseDate").css("height" , "0px") ;
+		$("#choseDate").attr("item" , "1") ;
+		parent.loadShow("block") ;
+		window.location = "html?method=jsDetail&zc="+init.zc+"&day="+init.day+"&classroom="+$(obj).attr("classroom") ;
+	}
+
+	function back(){
+		history.go(-1) ;
+	}
+
+	function errorDo(data){
+		if(data.code == "-1"){
+			parent.showError("网络错误，请稍后再试") ;
+			parent.loadShow("none") ;
+		}else if(data.code == "-2" || data.code == "-3"){
+			parent.showError("HUT网络环境不支持此功能") ;
+			parent.loadShow("none") ;
+		}
+	}
+</script>
+</html>

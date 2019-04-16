@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+	<title></title>
+	<style type="text/css">
+		*{margin:0px;padding:0px;font-size:12px;border:0px;overflow:hidden;}
+		#top{width:100%;height:50px;border-bottom:1px solid #ebe9e9;}
+		#top div{float:left;height:50px;}
+		#top .top-center{width:50%;text-align:center;line-height:50px;font-size:20px;}
+		#panel{width:100%;}
+	</style>
+</head>
+<body>
+	<div id="top">
+		<div class="top-left" onclick="back()" style="width:25%;"><i style="display:block;height:33px;width:33px;background:url(back.png) 0px 0px;margin:8px 0px 0px 10px;"></i></div>
+		<div class="top-center">电费查询</div>
+		<div  class="top-right" style="width:25%;"></div>
+	</div>
+	<img id="icon" src="df_icon.jpg" style="width:100%;">
+	<div id="panel">
+		<div class="build"><input type="text" name="build" placeholder="宿舍楼栋" style="width:80%;text-align:center;display:block;margin:0px auto ;border:1px solid green;height:30px;font-size:16px;margin-top:10px;border-radius:8px;outline:none;"></div>
+		<div class="room"><input type="text" name="room" placeholder="宿舍门牌" style="width:80%;text-align:center;display:block;margin:0px auto ;border:1px solid green;height:30px;font-size:16px;border-radius:8px;outline:none;"></div>
+		<div class="area" style="width:80%;margin:0px auto;color:green;"><p>河西<input type="radio" name="area" value="1" style="float:right;" checked="checked"></p><p style="margin-top:5px;">河东<input type="radio" name="area" style="float:right;" value="2"></p></div>
+		<div class="btn"><p onclick="btn(this)" style="width:200px;height:30px;border:1px solid green;border-radius:20px;font-size:18px;line-height:30px;margin:0px auto;text-align:center;">查询</p></div>
+	</div>
+	<div id="msg" style="width:100%;height:100%;position:fixed;background:url(empty1.png);top:0px;display:none;">
+		<div class="msg-panel" style="width:300px;height:250px;background:white;">
+			<div class="msg-top" style="width:100%;height:200px;">
+				<p style="height:100px;"><span style="font-size:25px;line-height:100px;margin-left:60px;color:green;">余电：</span><span id="yd" style="font-size:25px;line-height:100px;margin-left:20px;color:green;"></span></p>
+				<p style="height:100px;"><span style="font-size:25px;line-height:100px;margin-left:60px;color:green;">余额：</span><span id="ye" style="font-size:25px;line-height:100px;margin-left:20px;color:green;"></span></p>
+			</div>
+			<div class="msg-btn" onclick="clearPanel(this)" style="width:100%;height:50px;background:green;font-size:20px;line-height:50px;text-align:center;color:white;">确定</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+	var height = parent.init.clientHeight ;
+	var width = parent.init.clientWidth ;
+
+	$(function(){
+		parent.loadShow("none") ;
+
+		$("#panel").css("height" , height - 51 - width + "px") ;
+		$("#msg .msg-panel").css("margin" , (height - 250) / 2 +"px auto") ;
+
+		var panelHeight = height - 51 - width ;
+		$("#panel div").css("height" , panelHeight/4) ;
+	})
+
+	function back(obj){
+		history.go(-1) ;
+	}
+
+	function btn(obj){
+		var build = $(".build input").val() ;
+		if(build == "" || typeof(build) == "undefined"){
+			parent.showError("请将数据填写完整") ;
+			return ;
+		}
+		var room = $(".room input").val() ;
+		if(room == "" || typeof(room) == "undefined"){
+			parent.showError("请将数据填写完整") ;
+			return ;
+		}
+		var area = $("input[name='area']:checked").val()   ;
+		$.ajax({
+			type:"GET" ,
+			url:"huthelper?method=dfcx&build="+build+"&room="+room+"&area="+area ,
+			dataType:"json" ,
+			success:function(data){
+				if(data.code == "-1"){
+					parent.showError("网络错误") ;
+					return ;
+				}
+				$("#msg").css("display" , "block") ;
+				$("#yd").html(data.electricity) ;
+				$("#ye").html(data.balance) ;
+			},error:function(){
+				parent.showError("网络错误") ;
+			}
+		}) ;
+	}
+
+	function clearPanel(obj){
+		$("#msg").css("display" , "none") ;
+	}
+
+	window.onpopstate = function(event) {
+		parent.loadShow("block") ;
+		history.go(-1) ;
+	};
+	window.history.pushState(null, null, document.URL);
+
+	var winHeight = height;
+    $(window).resize(function () {
+        var thisHeight = $(this).height();
+        console.log(winHeight+"\t"+thisHeight) ;
+        if (winHeight - thisHeight > 50) {
+            //窗口发生改变(大),故此时键盘弹出
+            //当软键盘弹出，在这里面操作
+            $("#icon").css("display" , "none") ;
+        } else {
+            //窗口发生改变(小),故此时键盘收起
+            //当软键盘收起，在此处操作
+            $("#icon").css("display" , "block") ;
+        }
+    });
+</script>
+</html>

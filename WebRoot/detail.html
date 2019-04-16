@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+	<title></title>
+	<style type="text/css">
+		*{margin:0px;padding:0px;overflow:hidden;font-size:12px;border:0px;}
+		#container{background:url(blackbord.jpg);width:100%;overflow:auto ;}
+		#container .box{width:100%;height:300px;}
+		.box .panel{background:url(empty1.png);width:90%;height:90%;margin:5% auto;border:3px solid #be8080;}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<div class="box c1">
+			<div class="panel"></div>
+		</div>
+		<div class="box c2">
+			<div class="panel"></div>
+		</div>
+		<div class="box c3">
+			<div class="panel"></div>
+		</div>
+		<div class="box c4">
+			<div class="panel"></div>
+		</div>
+		<div class="box c5">
+			<div class="panel"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+	var height = parent.init.clientHeight ;
+	var width = parent.init.clientWidth ;
+	var zc = 4 ;
+	var day = 5 ;
+	var classroom = "包设414" ;
+	var fenbu = [1 , 2 , 3 , 4] ;
+
+	$(function(){
+		$("#container").css("height" , height + "px") ;
+
+		$.ajax({
+			type:"GET" ,
+			url:"user.do?method=clasdetail&zc="+zc+"&day="+day+"&classroom="+classroom ,
+			dataType:"json" ,
+			success:function(data){
+				if(typeof(data.code)=="undefined"){
+					resultShow(data) ;
+				}else{
+
+				}
+				parent.loadShow("none") ;
+			} , error:function(){
+				parent.loadShow("none") ;
+			}
+		}) ;
+	}) ;
+
+	//处理返回数据
+	function resultShow(data) {
+		for(var i=1 ; i<=5 ; i++){
+			if(isExsits(i)){
+				var line = $("<div style='width:98%;margin:0px auto;'></div>") ;
+				var classroom = $("<div style='width:100%;height:54px;font-size:18px;line-height:54px;color:white;'>教室："+data[i].classroom+"</div>") ;
+				var classes = $("<div style='width:100%;height:54px;font-size:18px;line-height:54px;color:white;'>班级："+data[i].classes+"</div>") ;
+				var teacher = $("<div style='width:100%;height:54px;font-size:18px;line-height:54px;color:white;'>老师："+data[i].teacher+"</div>") ;
+				var time = $("<div style='width:100%;height:54px;font-size:18px;line-height:54px;color:white;'>时间：第"+zc+"周 星期"+day+" 第"+i+"节课</div>") ;
+				var classname = $("<div style='width:100%;height:54px;font-size:18px;line-height:54px;color:white;'>课程："+data[i].classname+"</div>") ;
+				line.append(classroom).append(classes).append(teacher).append(time).append(classname) ;
+				$(".c"+i+" .panel").append(line) ;
+			}else{
+				var line = $("<div style='width:98%;margin:0px auto;'></div>") ;
+				var detail = $("<div style='width:100%;height:100%;font-size:18px;line-height:270px;color:white;text-align:center;'>没有课</div>") ;
+				line.append(detail) ;
+				$(".c"+i+" .panel").append(line) ;
+			}
+		}
+	}
+
+	//判断数组中是否有指定元素
+	function isExsits(e){
+		for(var i=0 ; i<fenbu.length ; i++){
+			if(e == fenbu[i]){
+				return true ;
+			}
+		}
+		return false ;
+	}
+</script>
+</html>

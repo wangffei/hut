@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style>* {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+#top {
+	width: 100%;
+	height: 50px;
+	text-align: center;
+	/*background: aquamarine;*/
+	line-height: 50px;
+	font-family: "arial rounded mt bold";
+	font-size: 20px;
+	font-weight: 500;
+	border-bottom: 1px solid #f5f5f5;
+}
+
+.wenben {
+	width: 100%;
+	height: 100px;
+}
+
+.kong1 {
+	background: #f5f5f5;
+	width: 100%;
+	font-size: 15px;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 10px;
+	display: inline-block;
+}
+
+.pp {
+	position: absolute;
+	left: 10px;
+}
+
+.tijiao {
+	width: 90%;
+	height: 50px;
+	background: skyblue;
+	margin: 30px auto;
+	border-radius: 30px;
+	text-align: center;
+}
+	.top-left{
+		position: fixed;
+	}
+	</style>
+
+	<body>
+		<div id="top">
+			<div class="top-left" style="width:25%;"><i onclick="back()" style="display:block;height:33px;width:33px;background:url(back.png) 0px 0px;margin:8px 0px 0px 10px;"></i></div>
+			<p>反馈建议</p>
+		</div>
+		<div class="kong1">
+			<p class="pp">建议/反馈</p>
+			<p id="word" style="position: absolute; right: 20px;">150</p>
+		</div>
+		<div class="wenben">
+			<form class="myfrom" action="jianyi" method="post">
+				<textarea class="pp" id="strtext" style="width: 90%; height: 100px; border:0 ;outline: none;" name="strtext" placeholder="请输入你的建议与反馈(不少于15字)!" ></textarea>
+				<input class="strimg1" style="display: none; width: 100%; height: 100px; border:0 ;outline: none;" type="text" name="strimg1" />
+				<input class="strimg2" style="display: none; width: 100%; height: 100px; border:0 ;outline: none;" type="text" name="strimg2" />
+				<input class="strimg3" style="display: none; width: 100%; height: 100px; border:0 ;outline: none;" type="text" name="strimg3" />
+				<input id="sub" type="submit" style="display:none;"/>
+			</form>
+			<input accept="image/gif,image/jpeg,image/jpg,image/png" class="tupian1" type="file" style="display: none; "  />
+			<input accept="image/gif,image/jpeg,image/jpg,image/png" class="tupian2" type="file" style="display: none; "  />
+			<input accept="image/gif,image/jpeg,image/jpg,image/png" class="tupian3" type="file" style="display: none; "  />
+		</div>
+		<div class="kong1">
+			<p class="pp">图片(最多可添加3张)</p>
+		</div>
+		<div style="width: 310px; margin: 0 auto;" >
+			<img id="shangchuan1"  src="shangchuan.jpg" style="width: 100px; height: 100px;" onclick="uploadFile('tupian1')" />
+			<img id="shangchuan2" src="shangchuan.jpg" style="width: 100px; height: 100px;" onclick="uploadFile('tupian2')" />
+			<img id="shangchuan3" src="shangchuan.jpg" style="width: 100px; height: 100px;" onclick="uploadFile('tupian3')" />
+		</div>
+		<div class="tijiao">
+			<p id="submit" style="line-height: 50px;">提 交</p>
+			<p id="fanhui" style="line-height: 50px;display: none;">返回</p>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script src="showText.js"></script>
+	<script>
+		var init = {
+		clientHeight: window.screen.height, //浏览器高度
+		clientWidth: window.screen.width //浏览器宽度
+		};
+		
+		//返回事件
+		function back() {
+			history.go(-1);
+		}
+		
+		window.onpopstate = function(event) {
+			parent.loadShow("block");
+			history.go(-1);
+		};
+		window.history.pushState(null, null, document.URL);
+		//window.history.forward(-1);
+		
+		$("body").css("width", init.clientWidth + "px");
+		
+		function uploadFile(obj) {
+			$("." + obj).click();
+		}
+		$(".tupian1").change(function() {
+			var file = this.files[0];
+			if(undefined == file) {
+				return;
+			}
+			r = new FileReader();
+			r.readAsDataURL(file);
+			var base64 = "";
+			r.onload = function(e) {
+				base64 = e.target.result;
+				$(".strimg1").val(base64);
+			}
+			document.getElementById('shangchuan1').src = getFullPath(this);
+		});
+		$(".tupian2").change(function() {
+			var file = this.files[0];
+			if(undefined == file) {
+				return;
+			}
+			r = new FileReader();
+			r.readAsDataURL(file);
+			var base64 = "";
+			r.onload = function(e) {
+				base64 = e.target.result;
+				$(".strimg2").val(base64);
+			}
+			document.getElementById('shangchuan2').src = getFullPath(this);
+		});
+		$(".tupian3").change(function() {
+			var file = this.files[0];
+			if(undefined == file) {
+				return;
+			}
+			r = new FileReader();
+			r.readAsDataURL(file);
+			var base64 = "";
+			r.onload = function(e) {
+				base64 = e.target.result;
+				$(".strimg3").val(base64);
+			}
+			document.getElementById('shangchuan3').src = getFullPath(this);
+		});
+		
+		function getFullPath(obj) {
+			if(obj) {
+				if(obj.files) {
+					return window.URL.createObjectURL(obj.files.item(0));
+				}
+				return obj.value;
+			}
+		}
+		//检测字数
+		
+		$("#strtext").keyup(function() {        
+			var  len  =  $(this).val().length;        
+			if(len  >  149) {            
+				$(this).val($(this).val().substring(0, 150));            
+				$("#word").text(0);        
+			}        
+			var  num  =  150  -  len;
+		
+			        
+			if(num < 0) {            
+				$("#word").text(0);        
+			} else {            
+				$("#word").text(num);        
+			}    
+		});
+		
+		$(function() {
+			parent.loadShow("none") ;
+			$("#submit").click(function() {
+				var  len  =  $("#strtext").val().length; 
+				if(len<15){
+										showToast({
+					    text: '请输入不少于15字', //【必填】，否则不能正常显示 , 剩余的其他不是必填
+					    bottom: '10%', //toast距离页面底部的距离
+					    zindex: 2, //为了防止被其他控件遮盖，z-index默认为2
+					    speed: 500, //toast的显示速度
+					    time: 5000 //toast显示多久以后消失
+					});
+						
+					
+				}else{
+					$.ajax({
+						type:"POST" ,
+						url:"jianyi" ,
+						data:$(".myfrom").serialize() ,
+						success:function(data){
+							$(function(){showAlert({text: '我们已收到你的建议',btnText: '确定',top: '34%',zindex: 5,color: '#fff',bgColor: '#1b79f8',success: function(){}});})
+						} , error:function(){
+							$(function(){showAlert({text: '发送失败，请直接发送开发者qq：1730145232',btnText: '确定',top: '34%',zindex: 5,color: '#fff',bgColor: '#1b79f8',success: function(){}});})
+						}
+					}) ;
+				}
+				
+			})
+		})
+	</script>
+</html>

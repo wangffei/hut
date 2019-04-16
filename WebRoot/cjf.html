@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+	<title></title>
+	<style type="text/css">
+		*{margin:0px;padding:0px;font-size:12px;border:0px;overflow:hidden;}
+		#top{width:100%;height:50px;border-bottom:1px solid #ebe9e9;}
+		#top div{float:left;height:50px;}
+		#top .top-center{width:50%;}
+		#top #timeSelect{width:95px;height:50px;margin:0px auto;}
+		#select{position:fixed;top:0px;left:0px;background:url(empty.png);width:100%;height:100%;display:none;}
+	</style>
+</head>
+<body>
+	<div id="top">
+		<div class="top-left" onclick="back()" style="width:25%;"><i style="display:block;height:33px;width:33px;background:url(back.png) 0px 0px;margin:8px 0px 0px 10px;"></i></div>
+		<div class="top-center"><div id="timeSelect" item="" onclick="selectTime(this)"><div class="zc" style="font-size:20px;line-height:50px;float:left;">大一上</div><img src="selectzc.png" style="width:18px;height:18px;margin-top:16px;display:block;float:right;"></div></div>
+		<div  class="top-right" style="width:25%;"><img onclick="flushs(this)" src="flush.png" style="width:30px;height:30px;float:right;margin:10px 10px 0px 0px;"></div>
+	</div>
+	<div id="content" style="overflow:auto;">
+		<div style="width:100%;height:100%;text-align:center;"><img src="uploading.gif" style="width:30px;height:30px;margin-top:10px;" ></div>
+	</div>
+	<div id="select" onclick="hiddenPanel(this)">
+		<div class="panel" style="width:150px;height:200px;margin:51px auto;background:white;border-radius:10px;overflow:auto;">
+			<div onclick='clickZc(this)' item="1" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大一上</div>
+			<div onclick='clickZc(this)' item="2" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大一下</div>
+			<div onclick='clickZc(this)' item="3" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大二上</div>
+			<div onclick='clickZc(this)' item="4" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大二下</div>
+			<div onclick='clickZc(this)' item="5" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大三上</div>
+			<div onclick='clickZc(this)' item="6" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大三下</div>
+			<div onclick='clickZc(this)' item="7" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大四上</div>
+			<div onclick='clickZc(this)' item="8" style='font-size:20px;line-height:50px;text-align:center;color:#8a8a8a;letter-spacing:2px;'>大四下</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+	var height = parent.init.clientHeight ;
+	var width = parent.init.clientWidth ;
+	//保存成绩
+	var cj = {} ;
+
+	window.onload = function(){
+		$("#top #timeSelect").css("margin-left" , (width*0.5 - 100)/2 + "px" );
+		//设置content的高度
+		$("#content").css("height" , height - 51 + "px") ;
+		parent.loadShow("none") ;
+		//请求成绩数据
+		$.ajax({
+			url:"user.do?method=cj" ,
+			type:"GET" ,
+			dataType:"json" ,
+			success:function(data){
+				errorDo(data)
+				cj = data ;
+				var count = Object.keys(data).length ;
+				for(var i=count ; i<8 ; i++){
+					$("#select .panel div").eq(count).remove() ;
+				}
+				$("#timeSelect").attr("item" , $("#select .panel div").eq(count-1).attr("item"))
+				$("#timeSelect div").html($("#select .panel div").eq(count-1).html())
+				for(var i in cj){
+					if(decode(cj[i].nj) == getNj(count)){
+						showResult(cj[i]) ;
+					}
+				}
+			} , error:function(){
+			}
+		}) ;
+	}
+
+	//根据给定的次数判断当前最新成绩是大几
+	function getNj(count){
+		if(count == 0){
+			return "大一上" ;
+		}else if(count == 1){
+			return "大一上" ;
+		}else if(count == 2){
+			return "大一下" ;
+		}else if(count == 3){
+			return "大二上" ;
+		}else if(count == 4){
+			return "大二下" ;
+		}else if(count == 5){
+			return "大三上" ;
+		}else if(count == 6){
+			return "大三下" ;
+		}else if(count == 7){
+			return "大四上" ;
+		}else if(count == 8){
+			return "大四下" ;
+		}
+	}
+
+	//unicode解码
+	function decode(str){
+		//先把十六进制unicode编码/u替换为%u
+        str = str.replace(/\\u/gi,'%u');
+        //再把页面中反斜杠替换为空
+        str = str.replace(/\\/gi,'');
+        return unescape(str);
+	}
+
+	//隐藏选择层
+	function hiddenPanel(obj){
+		$(obj).css("display" , "none") ;
+	}
+
+	//时间选择事件
+	function selectTime(obj){
+		$("#select").css("display" , "block") ;
+	}
+
+	//刷新事件
+	function flushs(obj){
+		$("#content div").each(function(){
+			$(this).remove() ;
+		}) ;
+		$("#content").append($("<div style='width:100%;height:100%;text-align:center;'><img src='uploading.gif' style='width:30px;height:30px;margin-top:10px;' ></div>")) ;
+		//请求成绩数据
+		$.ajax({
+			url:"user.do?method=cj&flush=flush" ,
+			type:"GET" ,
+			dataType:"json" ,
+			success:function(data){
+				errorDo(data)
+				cj = data ;
+				var count = Object.keys(data).length ;
+				for(var i=count ; i<8 ; i++){
+					$("#select .panel div").eq(count).remove() ;
+				}
+				$("#timeSelect").attr("item" , $("#select .panel div").eq(count-1).attr("item"))
+				$("#timeSelect div").html($("#select .panel div").eq(count-1).html())
+				for(var i in cj){
+					if(decode(cj[i].nj) == getNj(count)){
+						showResult(cj[i]) ;
+					}
+				}
+			} , error:function(){
+			}
+		}) ;
+	}
+
+	//
+	function clickZc(obj){
+		for(var i in cj){
+			if(decode(cj[i].nj) == $(obj).html()){
+				console.log(decode(cj[i].nj))
+				$("#timeSelect .zc").html($(obj).html()) ;
+				$("#timeSelect").attr("item" , $(obj).attr("item")) ;
+				$("#content div").each(function(){
+					$(this).remove() ;
+				}) ;
+				$("#content").append($("<div style='width:100%;height:100%;text-align:center;'><img src='uploading.gif' style='width:30px;height:30px;margin-top:10px;' ></div>")) ;
+				window.setTimeout(function(){showResult(cj[i]) ;} , 500) ;
+				break;
+			}
+		}
+	}
+
+	window.onpopstate = function(event) {
+		parent.loadShow("block") ;
+		history.go(-1) ;
+	};
+	window.history.pushState(null, null, document.URL);
+
+	//返回事件
+	function back(){
+		history.go(-1) ;
+	}
+
+	//成绩结果展示
+	function showResult(data){
+		$("#content div").each(function(){
+			$(this).remove() ;
+		})
+		for(var i in data){
+			if(i == "nj"){
+				continue;
+			}
+			var box = $("<div style='width:100%;height:100px;border-bottom:1px solid #ebe9e9;'></div>") ;
+			var line = $("<div style='width:96%;height:100px;margin:0px auto;'></div>") ;
+			var title = $("<div style='height:40px;font-size:20px;line-height:40px;'>"+decode(data[i].classname)+"</div>") ;
+			var div = $("<div style='height:60px;width:100%;'></div>") ;
+			var kcxz = $("<div style='width:130px;height:30px;line-height:30px;color:#888888;float:left;'>课程性质："+decode(data[i].kcxz)+"</div>") ;
+			var score = $("<div style='width:70px;height:30px;border-top-right-radius:25px;border-top-left-radius:25px;border-bottom-right-radius:25px;float:right;background:#00fff3;text-align:center;line-height:30px;font-size:16px;color:white;'>"+decode(data[i].score)+"</div>") ;
+			var kcsx = $("<div style='width:110px;height:30px;line-height:30px;float:left;color:#888888;'>课程属性："+decode(data[i].kcsx)+"</div>") ;
+			var ksxz = $("<div style='width:130px;height:30px;line-height:30px;float:left;color:#888888;'>考试性质："+decode(data[i].ksxz)+"</div>") ;
+			var xj = $("<div style='width:150px;height:30px;line-height:30px;float:left;color:#888888;'>学分&绩点："+data[i].xuefen+"&"+data[i].jidian+"</div>")
+			div.append(kcxz).append(score).append(kcsx).append(ksxz).append(xj) ;
+			box.append(line.append(title).append(div)) ;
+			$("#content").append(box) ;
+		}
+	}
+
+	function errorDo(data){
+		if(data.code == "-1"){
+			parent.showError("网络错误，请稍后再试") ;
+		}else if(data.code == "-2" || data.code == "-3"){
+			parent.showError("HUT网络环境不支持此功能") ;
+		}
+	}
+</script>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				/*font-size: 12px;*/
+				/*overflow: hidden;*/
+				border: 0px;
+			}
+			
+			#top {
+				width: 100%;
+				height: 50px;
+				text-align: center;
+				/*background: aquamarine;*/
+				line-height: 50px;
+				font-family: "arial rounded mt bold";
+				font-size: 20px;
+				font-weight: 500;
+				border-bottom: 1px solid #f5f5f5;
+			}
+			
+			#top p {
+				font-size: 20px;
+			}
+			
+			#content {
+				width: 100%;
+				overflow: auto;
+			}
+			
+			#bg {
+				width: 100%;
+				height: 200px;
+				/*border-bottom: 1px solid #f5f5f5;*/
+			}
+			
+			#bottom {
+				width: 100%;
+				background: white;
+				position: absolute;
+				bottom: 0px;
+			}
+			
+			
+			.cardimg {
+				width: 50px;
+			}
+			
+			P {
+				font-size: 16px;
+				color: #888282;
+				text-align: center;
+				font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+			}
+			.panel-card {
+				display: inline-block;
+				text-align: center;
+			}
+			.fun-icon{
+				margin: 15px auto 0px;
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="top">
+			<p>湖 工 家 园</p>
+		</div>
+		<div id="bg"><img src="top6.jpg" style="width: 100%;" height="100%"></div>
+		<div id="content">
+
+			<div class="fun-icon">
+				<div class="panel-card" tp="1" onclick="goIn(this)">
+					<img class="cardimg" src="rounddate_range24p.png" />
+					<p>课表查询</p>
+				</div>
+				<div class="panel-card" tp="2" onclick="goIn(this)">
+					<img class="cardimg" src="roundfind_in_page2.png" />
+					<p>教室查询</p>
+				</div>
+				<div class="panel-card" tp="3" onclick="goIn(this)">
+					<img class="cardimg" src="roundimport_contact.png" />
+					<p>考试安排</p>
+				</div>
+				<div class="panel-card" tp="4" onclick="goIn(this)">
+					<img class="cardimg" src="roundschool24px.png" />
+					<p>成绩查询</p>
+				</div>
+				<div class="panel-card" tp="5" onclick="goIn(this)">
+					<img class="cardimg" src="roundtouch_app24px.png" />
+					<p>电费查询</p>
+				</div>	
+				<div class="panel-card"  tp="6" onclick="goIn(this)">
+					<img class="cardimg" src="rounddate_range24p.png" />
+					<p>校历</p>
+				</div>
+				<div class="panel-card" tp="7" onclick="goIn(this)">
+					<img class="cardimg" src="rounddate_range24p.png" />
+					<p>等级考试</p>
+				</div>
+				<div class="panel-card" tp="9" onclick="goIn(this)">
+					<img class="cardimg" src="rounddate_range24p.png" />
+					<p>入学须知</p>
+				</div>
+				<div class="panel-card" tp="10" onclick="goIn(this)">
+					<img class="cardimg" src="rounddate_range24p.png" />
+					<p>实习安排</p>
+				</div>
+			</div>
+		</div>
+		<div id="iframe-grxx" style="position:fixed;width:100%;top:50px;background:white;display:none;">
+			<iframe width="100%" height="100%" src="grzx.html"></iframe>
+		</div>
+		<div id="bottom">
+			<div tp="11" onclick="goIn(this)" style="width:50%;height:100%;float:left;text-align:center;">
+				<img src="rounddashboard24px.png" style="height:80%;margin-top:5px;">
+			</div>
+			<div tp="8" onclick="goIn(this)" style="width:50%;height:100%;float:left;text-align:center;">
+				<img src="roundperson24px.png" style="height:80%;margintop:5px;">
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript">
+		var init = {
+			clientHeight: parent.init.clientHeight, //浏览器高度
+			clientWidth: parent.init.clientWidth //浏览器宽度
+		};
+
+		//页面初始布局
+		$("#content").css("height", init.clientHeight * 0.92 - 220 + "px");
+		$("#bottom").css("height", init.clientHeight * 0.08 + "px");
+		$("#iframe-grxx").css("height" , init.clientHeight - 101 + "px") ;
+
+		//计算每个图标应该的宽度
+		var iconWidth = init.clientWidth * 0.24 ;
+		var iconHeight = iconWidth + 10 ;
+
+		$(".panel-card").css("width" , iconWidth+"px").css("height" , iconHeight+"px") ;
+
+		if(window.localStorage.grzl != "" && typeof(window.localStorage.grzl) != "undefined"){
+			var birthday = JSON.parse(window.localStorage.grzl)["birthday"] ;
+			var data = "" ;
+			//计算生日农历对应的公历
+			if(birthday.split("-").length == 3){
+				var y = new Date().getFullYear() ;
+				var m = birthday.split("-")[1] ;
+				var d = birthday.split("-")[2] ;
+				data = parent.calendar.lunar2solar(y , parseInt(m) , parseInt(d)) ;
+			}else{
+				var y = new Date().getFullYear() ;
+				var m = birthday.substring(4 , 6) ;
+				var d = birthday.substring(6 , 8) ;
+				data = parent.calendar.lunar2solar(y , parseInt(m) , parseInt(d)) ;
+			}
+			var m = new Date().getMonth() + 1 ;
+			var d = new Date().getDate() ;
+			//判断今天是否是用户生日
+			if(m+"" == data.cMonth && d+"" == data.cDay){
+				$("#bg img").attr("src" , "birthday.jpg") ;
+			}
+		}
+
+		window.onload = function() {
+			parent.loadShow("none");
+		}
+
+		history.pushState(null, null, document.URL);
+		window.addEventListener('popstate', function() {
+			history.pushState(null, null, document.URL);
+		});
+
+		function goIn(obj) {
+			var tp = $(obj).attr("tp");
+			if(tp == "1") {
+				parent.loadShow("block");
+				window.location = "kbf.html";
+			} else if(tp == "2") {
+				parent.loadShow("block");
+				window.location = "classroom.html";
+			} else if(tp == "3") {
+				parent.loadShow("block");
+				window.location = "ks.html";
+			} else if(tp == "4") {
+				parent.loadShow("block");
+				window.location = "xff.html";
+			} else if(tp == "8") {
+				//parent.loadShow("block");
+				//window.location = "grzx.html";
+				$("#iframe-grxx").css("display" , "block") ;
+			}else if(tp == "7"){
+				parent.loadShow("block");
+				window.location = "djf.html" ;
+			}else if(tp == "9"){
+
+			}else if(tp == "10"){
+				parent.loadShow("block");
+				window.location = "sxf.html" ;
+			}else if(tp == "5"){
+				parent.loadShow("block") ;
+				window.location = "dfcx.html" ;
+			}else if(tp == "6"){
+				parent.loadShow("block") ;
+				window.location = "zlf.html" ;
+			}else if(tp == "11"){
+				$("#iframe-grxx").css("display" , "none") ;
+			}
+		}
+	</script>
+
+</html>
