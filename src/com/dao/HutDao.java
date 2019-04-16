@@ -8,9 +8,9 @@ import java.util.List;
 
 
 public class HutDao{
-	private static String xh = "17401600119" ;         //将以此学号对hut电费查询接口进行访问
+	private static String xh = "1740****119" ;         //将以此学号对hut电费查询接口进行访问
 	//该学号对应的登陆令牌
-	private static String userkey = "8c53c79c80d6d5a27995423461a83d299cac3706" ;
+	private static String userkey = "8c53c79c80d6d5a27995423461a***********" ; //hut助手的登陆令牌
 
 	public static String dfcxDao(String build , String room , String area){
 		String path = getUrl(build, room, xh, Integer.parseInt(area));
