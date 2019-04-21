@@ -89,15 +89,21 @@
 			var url = "user.do?method=grxx";
 			if(window.localStorage.grzl == "" || typeof(window.localStorage.grzl) == "undefined"){
 				$.get(url, function(data) {	
-					window.localStorage.grzl = data ;
+					if(data.length > 25){
+						window.localStorage.grzl = data ;
+					}
 					var obj = eval('(' + data + ')');
 					var li = "<p style='font-size: 25px;'>" + obj.xm + "</p><p style='color: #888282;'>" + obj.bj + "班</p>"
 					$(".xinxi").append(li);
 				})
 			}else{
-				var obj = eval('(' + window.localStorage.grzl + ')');
-				var li = "<p style='font-size: 25px;'>" + obj.xm + "</p><p style='color: #888282;'>" + obj.bj + "班</p>"
-				$(".xinxi").append(li);
+				try{
+					var obj = eval('(' + window.localStorage.grzl + ')');
+					var li = "<p style='font-size: 25px;'>" + obj.xm + "</p><p style='color: #888282;'>" + obj.bj + "班</p>"
+					$(".xinxi").append(li);
+				}catch(err){
+					window.localStorage.grzl = "" ;
+				}	
 			}
 			//parent.loadShow("none");
 		})

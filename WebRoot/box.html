@@ -147,25 +147,29 @@
 		$(".panel-card").css("width" , iconWidth+"px").css("height" , iconHeight+"px") ;
 
 		if(window.localStorage.grzl != "" && typeof(window.localStorage.grzl) != "undefined"){
-			var birthday = JSON.parse(window.localStorage.grzl)["birthday"] ;
-			var data = "" ;
-			//计算生日农历对应的公历
-			if(birthday.split("-").length == 3){
-				var y = new Date().getFullYear() ;
-				var m = birthday.split("-")[1] ;
-				var d = birthday.split("-")[2] ;
-				data = parent.calendar.lunar2solar(y , parseInt(m) , parseInt(d)) ;
-			}else{
-				var y = new Date().getFullYear() ;
-				var m = birthday.substring(4 , 6) ;
-				var d = birthday.substring(6 , 8) ;
-				data = parent.calendar.lunar2solar(y , parseInt(m) , parseInt(d)) ;
-			}
-			var m = new Date().getMonth() + 1 ;
-			var d = new Date().getDate() ;
-			//判断今天是否是用户生日
-			if(m+"" == data.cMonth && d+"" == data.cDay){
-				$("#bg img").attr("src" , "birthday.jpg") ;
+			try{
+				var birthday = JSON.parse(window.localStorage.grzl)["birthday"] ;
+				var data = "" ;
+				//计算生日农历对应的公历
+				if(birthday.split("-").length == 3){
+					var y = new Date().getFullYear() ;
+					var m = birthday.split("-")[1] ;
+					var d = birthday.split("-")[2] ;
+					data = parent.calendar.lunar2solar(y , parseInt(m) , parseInt(d)) ;
+				}else{
+					var y = new Date().getFullYear() ;
+					var m = birthday.substring(4 , 6) ;
+					var d = birthday.substring(6 , 8) ;
+					data = parent.calendar.lunar2solar(y , parseInt(m) , parseInt(d)) ;
+				}
+				var m = new Date().getMonth() + 1 ;
+				var d = new Date().getDate() ;
+				//判断今天是否是用户生日
+				if(m+"" == data.cMonth && d+"" == data.cDay){
+					$("#bg img").attr("src" , "birthday.jpg") ;
+				}
+			}catch(err){
+				window.localStorage.grzl = "" ;
 			}
 		}
 

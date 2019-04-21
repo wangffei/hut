@@ -1,23 +1,21 @@
 package com.servlet ;
 
-import com.interfaces.HttpServlet ;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 
-import org.jboss.com.sun.net.httpserver.HttpExchange;
+import com.dao.LoginDao;
+import com.wf.inter.HttpServlet;
+import com.wf.inter.HttpServletRequest;
+import com.wf.inter.HttpServletResponse;
+import com.wf.zj.RequestMapper;
 
-import java.util.Map ;
-import java.io.BufferedWriter ;
-import java.io.OutputStreamWriter ;
-
-import com.dao.LoginDao ;
-
+@RequestMapper(path="/login.do")
 public class LoginServlet implements HttpServlet{
-	public void service(HttpExchange exchange , Map<String , String> param) throws Exception{
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8")) ;
-		String username = param.get("username") ;
-		String password = param.get("password");
+	public void service(HttpServletRequest request , HttpServletResponse response) throws Exception{
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream() , "utf-8")) ;
+		String username = request.getParameter("username") ;
+		String password = request.getParameter("password");
 		String result = LoginDao.doLogin(username , password) ;
-		System.out.println(result) ;
-		exchange.sendResponseHeaders(200 , result.getBytes("utf-8").length);
 		writer.write(result);
 		writer.close() ;
 	}

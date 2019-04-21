@@ -35,9 +35,14 @@
 			dataType:"json" ,
 			success:function(data){
 				errorDo(data)
-				var table = $(data.res)
-				table.find("thead").remove() ;
-				resultShow(table.find("tbody")) ;
+				if(data.msg == "404"){
+					$("#content div").each(function(){
+						$(this).remove() ;
+					}) ;
+					$("#content").append($("<p style='text-align:center;line-height:50px;font-size:16px;color:green;'>暂无数据</p>")) ;
+					return ;
+				}
+				resultShow(data.data) ;
 			} , error:function(){
 
 			}
@@ -49,14 +54,14 @@
 		$("#content div").each(function(){
 			$(this).remove() ;
 		}) ;
-		data.find("tr").each(function(){
+		for(var i=0 ; i<data.length ; i++){
 			var box = $("<div style='width:100%;height:100px;border-bottom:1px solid #ebe4e4;'></div>") ;
-			var title = $("<div style='width:95%;margin:0px auto;height:50px;font-size:20px;line-height:50px;'>"+$(this).find("td").eq(0).html()+"</div>") ;
-			var time = $("<div style='width:95%;height:25px;line-height:25px;color:#979696;margin:0px auto;'>时间："+$(this).find("td").eq(1).html()+"</div>") ;
-			var place = $("<div style='width:95%;height:25px;line-height:25px;color:#979696;margin:0px auto;'>地点："+$(this).find("td").eq(2).html()+"</div>") ;
+			var title = $("<div style='width:95%;margin:0px auto;height:50px;font-size:20px;line-height:50px;'>"+data[i].name+"</div>") ;
+			var time = $("<div style='width:95%;height:25px;line-height:25px;color:#979696;margin:0px auto;'>时间："+data[i].time+"</div>") ;
+			var place = $("<div style='width:95%;height:25px;line-height:25px;color:#979696;margin:0px auto;'>地点："+data[i].place+"</div>") ;
 			box.append(title).append(time).append(place) ;
 			$("#content").append(box) ;
-		}) ;
+		} ;
 	}
 
 	//返回按钮
@@ -74,9 +79,14 @@
 			dataType:"json" ,
 			success:function(data){
 				errorDo(data)
-				var table = $(data.res)
-				table.find("thead").remove() ;
-				resultShow(table.find("tbody")) ;
+				if(data.msg == "404"){
+					$("#content div").each(function(){
+						$(this).remove() ;
+					}) ;
+					$("#content").append($("<p style='text-align:center;line-height:50px;font-size:16px;color:green;'>暂无数据</p>")) ;
+					return ;
+				}
+				resultShow(data.data) ;
 			} , error:function(){
 
 			}

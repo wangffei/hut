@@ -1,41 +1,29 @@
 package com.servlet ;
 
-import com.interfaces.HttpServlet ;
-import com.html.WriteHtml ;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 
-import org.jboss.com.sun.net.httpserver.HttpExchange;
-import org.jboss.com.sun.net.httpserver.Headers;
+import com.dao.HutDao;
+import com.wf.inter.HttpServletRequest;
+import com.wf.inter.HttpServletResponse;
+import com.wf.zj.RequestMapper;
 
-import java.util.Map ;
-
-import java.net.URLDecoder ;
-import java.io.BufferedWriter ;
-import java.io.OutputStreamWriter ;
-
-import com.dao.HutDao ;
-
-public class HutServlet implements HttpServlet {
-	public void service(HttpExchange exchange , Map<String , String> param) throws Exception{
-		String method = param.get("method");
-		if("dfcx".equals(method)){
-			dfcxMethod(exchange , param) ;
-		}
-	}
-
-	public void dfcxMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
-		String build = param.get("build") ;
-		String room = param.get("room") ;
-		String area = param.get("area") ;
+@RequestMapper(path="/huthelper")
+public class HutServlet {
+	
+	@RequestMapper(path="dfcx")
+	public void dfcxMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
+		String build = request.getParameter("build") ;
+		String room = request.getParameter("room") ;
+		String area = request.getParameter("area") ;
 		String data = "" ;
 		if(build == null || room == null || area == null){
 			data = "{code:-1}" ;
 		}else{
 			data = HutDao.dfcxDao(build , room , area) ; 
 		}
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "text/html;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream() , "utf-8"));
+		response.setContentTyoe("text/html;charset=utf-8");
 		writer.write(data);
 		writer.close() ;
 	}

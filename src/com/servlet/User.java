@@ -1,95 +1,45 @@
 package com.servlet ;
 
-import com.google.gson.Gson;
-import com.interfaces.HttpServlet ;
-import com.dao.UserDao ;
-import com.util.Config ;
-
-import org.jboss.com.sun.net.httpserver.HttpExchange;
-import org.jboss.com.sun.net.httpserver.Headers;
-
-import java.net.URLDecoder;
 import java.util.Calendar;
-import java.util.Map ;
-import java.util.Date ;
-import java.io.BufferedWriter ;
-import java.io.OutputStreamWriter ;
+import java.util.Date;
+import java.util.Map;
 
-public class User implements HttpServlet {
-	public void service(HttpExchange exchange , Map<String , String> param) throws Exception{
-		String method = param.get("method");
-		if(method.equals("xf")){
-			xfMethod(exchange , param) ;
-		}
-		if(method.equals("kb")){
-			kbMethod(exchange , param) ;
-		}
-		if(method.equals("time")){
-			getTime(exchange , param) ;
-		}
-		if(method.equals("cj")){
-			cjMethod(exchange , param) ;
-		}
-		if(method.equals("sx")){
-			sxMethod(exchange , param) ;
-		}
-		if(method.equals("dj")){
-			djMethod(exchange , param) ;
-		}
-		if(method.equals("zl")){
-			zlMethod(exchange , param) ;
-		}
-		if(method.equals("kjs")){
-			kjsMethod(exchange , param) ;
-		}
-		if(method.equals("clasdetail")){
-			cdlMethod(exchange , param) ;
-		}
-		//考试查询
-		if(method.equals("ks")){
-			ksMethod(exchange , param) ;
-		}
-		//个人信息查询
-		if(method.equals("grxx")){
-			grxxMethod(exchange , param) ;
-		}
-		//推出登陆
-		if("userquit".equals(method)){
-			quitMethod(exchange , param) ;
-		}
-	}
+import com.dao.UserDao;
+import com.google.gson.Gson;
+import com.util.Config;
+import com.wf.inter.HttpServletRequest;
+import com.wf.inter.HttpServletResponse;
+import com.wf.zj.RequestMapper;
+
+@RequestMapper(path="/user.do")
+public class User {
 
 	//退出登录
-	public void quitMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="userquit")
+	public void quitMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		Config.username = null ;
 		Config.password = null ;
 		String data = "{'fun':function(){window.location='login.html'}}" ;
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//个人信息
-	public void grxxMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="grxx")
+	public void grxxMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		String data = Config.grzl ;
 		if(data == null){
 			data = UserDao.getGrxx() ;
 		}
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//考试查询
-	public void ksMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="ks")
+	public void ksMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		String data = null ;
-
+		
 		data = UserDao.ksDetail() ;
 
 		if(data.contains("code") || data == null || data.trim().equals("")){
@@ -98,46 +48,37 @@ public class User implements HttpServlet {
 			}
 		}
 
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//教室详情
-	public void cdlMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
-		Integer zc = Integer.parseInt(param.get("zc")) ;
-		Integer day = Integer.parseInt(param.get("day")) ;
-		String classroom = URLDecoder.decode(param.get("classroom") , "utf-8") ;
+	@RequestMapper(path="clasdetail")
+	public void cdlMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
+		Integer zc = Integer.parseInt(request.getParameter("zc")) ;
+		Integer day = Integer.parseInt(request.getParameter("day")) ;
+		String classroom = request.getParameter("classroom") ;
 		String data = UserDao.getRoomDetail(zc , day , classroom) ;
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//空教室数据获取
-	public void kjsMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
-		Integer zc = Integer.parseInt(param.get("zc")) ;
-		Integer day = Integer.parseInt(param.get("day")) ;
-		Integer clas = Integer.parseInt(param.get("clas")) ;
+	@RequestMapper(path="kjs")
+	public void kjsMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
+		Integer zc = Integer.parseInt(request.getParameter("zc")) ;
+		Integer day = Integer.parseInt(request.getParameter("day")) ;
+		Integer clas = Integer.parseInt(request.getParameter("clas")) ;
 		String data = UserDao.getKjs(zc , day , clas) ;
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//获取周历
-	public void zlMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="zl")
+	public void zlMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		Map data = null ;
-		String flush = param.get("flush") ;
+		String flush = request.getParameter("flush") ;
 		if(flush == null || !flush.equals("flush")){
 			if(Config.zl == null){
 				data = UserDao.getZl() ;
@@ -170,18 +111,15 @@ public class User implements HttpServlet {
 			}
 		}
 		String result = "var result="+(new Gson().toJson(data))+";" ;
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "text/javascript;charset=utf-8");
-		exchange.sendResponseHeaders(200 , result.getBytes("utf-8").length);
-		writer.write(result);
-		writer.close() ;
+		response.setContentTyoe("text/javascript;charset=utf-8");
+		response.getWriter().print(result);
 	}
 
 	//获取等级考试成绩
-	public void djMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="dj")
+	public void djMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		String data = null ;
-		String flush = param.get("flush") ;
+		String flush = request.getParameter("flush") ;
 		if(flush == null || !flush.equals("flush")){
 			if(Config.dj == null){
 				data = UserDao.getDj() ;
@@ -196,18 +134,15 @@ public class User implements HttpServlet {
 				data = Config.dj ;
 			}
 		}
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//实习安排
-	public void sxMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="sx")
+	public void sxMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		String data = null ;
-		String flush = param.get("flush") ;
+		String flush = request.getParameter("flush") ;
 		if(flush == null || !flush.equals("flush")){
 			if(Config.sx == null){
 				data = UserDao.getSx() ;
@@ -222,18 +157,15 @@ public class User implements HttpServlet {
 				data = Config.sx ;
 			}
 		}
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//成绩查询
-	public void cjMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="cj")
+	public void cjMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		String data = null ;
-		String flush = param.get("flush") ;
+		String flush = request.getParameter("flush") ;
 		if(flush == null || !flush.equals("flush")){
 			if(Config.cj == null){
 				data = UserDao.getCj() ;
@@ -248,29 +180,23 @@ public class User implements HttpServlet {
 				data = Config.cj ;
 			}
 		}
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//获取服务器时间
-	public void getTime(HttpExchange exchange , Map<String , String> param) throws Exception{
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "text/javascript;charset=utf-8");
+	@RequestMapper(path="time")
+	public void getTime(HttpServletRequest request , HttpServletResponse response) throws Exception{
+		response.setContentTyoe("text/javascript;charset=utf-8");
 		String data = "var date_now = new Date("+new Date().getTime()+"); " ;
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.getWriter().print(data);
 	}
 
 	//学分查询
-	public void xfMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="xf")
+	public void xfMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		String data = null ;
-		String flush = param.get("flush") ;
+		String flush = request.getParameter("flush") ;
 		if(flush == null || !flush.equals("flush")){
 			if(Config.xf == null){
 				data = UserDao.xfInfo() ;
@@ -285,19 +211,16 @@ public class User implements HttpServlet {
 				data = Config.xf ;
 			}
 		}
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 
 	//课表查询
-	public void kbMethod(HttpExchange exchange , Map<String , String> param) throws Exception{
+	@RequestMapper(path="kb")
+	public void kbMethod(HttpServletRequest request , HttpServletResponse response) throws Exception{
 		String data = null ;
 		Map map = null ;
-		String flush = param.get("flag") ;
+		String flush = request.getParameter("flag") ;
 		if(flush == null || !flush.equals("flush")){
 			if(Config.kb != null){
 				map = Config.kb ;
@@ -332,11 +255,7 @@ public class User implements HttpServlet {
 				data = new Gson().toJson(Config.kb) ;
 			}
 		}
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(exchange.getResponseBody() , "utf-8"));
-		Headers header = exchange.getResponseHeaders() ;
-		header.set("Content-Type" , "application/json;charset=utf-8");
-		exchange.sendResponseHeaders(200 , data.getBytes("utf-8").length);
-		writer.write(data);
-		writer.close() ;
+		response.setContentTyoe("application/json;charset=utf-8");
+		response.getWriter().print(data);
 	}
 }
