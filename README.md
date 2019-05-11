@@ -4,7 +4,7 @@
 
 #如果对本项目中任何一处代码有引用请标明出处，谢谢合作
 
-服务器使用了自己封装的一个服务器：https://github.com/wangffei/hut 
+服务器使用了自己封装的一个服务器：https://github.com/wangffei/HttpServer
     
     （对jdk自带的HttpServer进行二次封装，使用了单例模式，适配器模式，静态代理，观察者，等多个设计模式，大部分采用面向接口编程）
 
